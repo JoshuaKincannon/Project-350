@@ -6,7 +6,7 @@ import java.awt.event.ActionListener;
 import java.util.Scanner;
 import javax.swing.JOptionPane;
 /* @author: Chiamaka Ezuruonye
-
+TODO: still working on some features and looking to clean things up a bit, but this works for the most part, but not perfectly
  */
 public class TicTacToeGUI implements ActionListener {
     Random rand = new Random();
