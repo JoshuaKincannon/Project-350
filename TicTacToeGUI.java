@@ -6,7 +6,7 @@ import java.awt.event.ActionListener;
 import java.util.Scanner;
 import javax.swing.JOptionPane;
 /* @author: Chiamaka Ezuruonye
-TODO: still working on some features and looking to clean things up a bit, but this works for the most part, but not perfectly
+
  */
 public class TicTacToeGUI implements ActionListener {
     Random rand = new Random();
@@ -27,12 +27,14 @@ public class TicTacToeGUI implements ActionListener {
     String player1Name = JOptionPane.showInputDialog(null, "Who is Player 1?",
             "Tic Tac Toe", JOptionPane.YES_NO_CANCEL_OPTION);
     String pl1 = JOptionPane.showInputDialog(null, player1Name +
-                    ", what letter/word/symbol would you like your game piece to be?",
+                    ", what letter/symbol would you like your game piece to be?",
             "Tic Tac Toe", JOptionPane.QUESTION_MESSAGE);
+    //TODO: specify what happens if enter something other than a word/symbol
 
     String player2Name = JOptionPane.showInputDialog(null, "Who is Player 2? " +
                     "If you wish to play against a CPU, please enter 'cpu' or 'CPU' below.",
             "Tic Tac Toe", JOptionPane.YES_NO_CANCEL_OPTION);
+    //TODO: specify a 10 char limit for names
 
     /*String pl2 = JOptionPane.showInputDialog(null, player2Name +
                     ", what letter/word/symbol would you like your piece to be?",
@@ -48,10 +50,10 @@ public class TicTacToeGUI implements ActionListener {
         else {
             playervsplayer = true;
             String pltwo = JOptionPane.showInputDialog(null, player2Name +
-                            ", what letter/word/symbol would you like your game piece to be?",
+                            ", what letter/symbol would you like your game piece to be?",
                     "Tic Tac Toe", JOptionPane.QUESTION_MESSAGE);
             pl2 = pltwo;
-        }
+        } //TODO: specify what happens if enter something other than a word/symbol
 
         gameFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         gameFrame.setSize(700, 700);
@@ -179,7 +181,7 @@ public class TicTacToeGUI implements ActionListener {
                textField.setText(player2Name + "'s Turn - " + pl2); //set player 2 name
            }
        }
-       else if(playervscpu){
+       else if(playervscpu){ //TODO: add a pause in between turns from p1 to cpu
            if (rand.nextInt(2) == 0) {
                player1turn = true;
                textField.setText(player1Name + "'s Turn - " + pl1);
@@ -332,7 +334,8 @@ public class TicTacToeGUI implements ActionListener {
                 buttons[i].setEnabled(false);
             }
             textField.setText("It's A Tie!");
-            //TODO: Add restart JOption at the end of the game
+            //TODO: Add restart JOption at the end of the game + scores
+            //TODO: add leaderboard/number of wins
         }
     }
 }
