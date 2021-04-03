@@ -2,10 +2,10 @@ import javax.swing.JFrame;
 /**********************************************************************
 * This class is the blueprint for the frame that holds the JPanel
  * which draws and implements the logic of the game.
-* */
+*********************************************************************/
 public class GameFrame extends JFrame {
 
-    GameFrame(){
+    GameFrame() {
 
 
         this.add(new GamePanel());
@@ -15,6 +15,7 @@ public class GameFrame extends JFrame {
         this.pack();
         this.setVisible(true);
         this.setLocationRelativeTo(null);
+
 
     }
 
