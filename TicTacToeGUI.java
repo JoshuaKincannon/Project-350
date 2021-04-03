@@ -5,8 +5,14 @@ import javax.swing.*;
 import java.awt.event.ActionListener;
 import java.util.Scanner;
 import javax.swing.JOptionPane;
-/* @author: Chiamaka Ezuruonye
+/**
+ * Tic Tac Toe with GUI implementation using Java Swing
+ * @author: Chiamaka Ezuruonye
+ * Date: April 2nd 2021
+ */ //TODO: game instructions in JMenu
 
+/**
+ * TicTacToeGUI class, implements an action listener
  */
 public class TicTacToeGUI implements ActionListener {
     Random rand = new Random();
@@ -22,7 +28,7 @@ public class TicTacToeGUI implements ActionListener {
     boolean playervscpu = false;
     Scanner scan = new Scanner(System.in);
     Scanner sc = new Scanner(System.in);
-    String pl2 = "O";
+    String pl2 = "0";
 
     String player1Name = JOptionPane.showInputDialog(null, "Who is Player 1?",
             "Tic Tac Toe", JOptionPane.YES_NO_CANCEL_OPTION);
@@ -42,6 +48,10 @@ public class TicTacToeGUI implements ActionListener {
 
      */
 
+    /**
+     * TicTacToeGUI method builds game board and inserts panels and buttons
+     * It also adds the style and colors for background/foreground and font
+     */
     TicTacToeGUI(){
         if(player2Name.equals("cpu") || player2Name.equals("CPU")){
             playervscpu = true;
@@ -53,7 +63,7 @@ public class TicTacToeGUI implements ActionListener {
                             ", what letter/symbol would you like your game piece to be?",
                     "Tic Tac Toe", JOptionPane.QUESTION_MESSAGE);
             pl2 = pltwo;
-        } //TODO: specify what happens if enter something other than a word/symbol
+        } //TODO: specify what happens if they enter something other than a letter/symbol
 
         gameFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         gameFrame.setSize(700, 700);
@@ -88,6 +98,12 @@ public class TicTacToeGUI implements ActionListener {
         checkWinner();
     }
 
+    /**
+     *
+     * @param e is an action event
+     *          Uses action listener to get responses about
+     *          which buttons have been pressed and acts accordingly
+     */
     @Override
     public void actionPerformed(ActionEvent e) {
         //TODO Auto-generated method stub
@@ -164,7 +180,10 @@ public class TicTacToeGUI implements ActionListener {
 
          */
 
-
+    /**
+     * FirstTurn method uses random variable
+     * to determine which player goes first
+     */
     public void firstTurn(){
        try {
            Thread.sleep(1000);
@@ -197,6 +216,10 @@ public class TicTacToeGUI implements ActionListener {
        }
     }
 
+    /**
+     * Check Winner method uses the buttons array
+     * to check values for patterns and matches for a win
+     */
     public void checkWinner(){
         //check x winning conditions
         if((buttons[0].getText() == pl1) &&
@@ -303,6 +326,12 @@ public class TicTacToeGUI implements ActionListener {
         tie();
     }
 
+    /**
+     *
+     * @param tic is an int
+     * @param tac is an int
+     * @param toe ia an int
+     */
     public void xWins(int tic, int tac, int toe){
         buttons[tic].setBackground(Color.GREEN);
         buttons[tac].setBackground(Color.GREEN);
@@ -313,6 +342,12 @@ public class TicTacToeGUI implements ActionListener {
         textField.setText(player1Name + " Wins!");
     }
 
+    /**
+     *
+     * @param tic is an int
+     * @param tac is an int
+     * @param toe is an int
+     */
     public void oWins(int tic, int tac, int toe){
         buttons[tic].setBackground(Color.GREEN);
         buttons[tac].setBackground(Color.GREEN);
@@ -323,6 +358,10 @@ public class TicTacToeGUI implements ActionListener {
         textField.setText(player2Name + " Wins!");
     }
 
+    /**
+     * tie method checks for a full board
+     * with no wins and decides it it's a tie
+     */
     public void tie(){
         if(buttons[0].getText() != "" && buttons[1].getText() != "" &&
                 buttons[2].getText() != "" && buttons[3].getText() != "" &&
@@ -335,7 +374,7 @@ public class TicTacToeGUI implements ActionListener {
             }
             textField.setText("It's A Tie!");
             //TODO: Add restart JOption at the end of the game + scores
-            //TODO: add leaderboard/number of wins
+            //TODO: add a leaderboard/number of wins
         }
     }
 }
