@@ -54,6 +54,18 @@ public class GamePlatform {
             }
         }
     }
+    
+    /**
+    * This will launch the Tetris game when tetrisbutton is pressed.
+    *
+    */
+    @Override
+        public void actionPerformed(ActionEvent e) {
+            if(e.getSource() == tetrisButton){
+                new Tetris().main(new String[]{"arg1", "arg2"});
+            }
+        }
+    }
 
 
     /**
