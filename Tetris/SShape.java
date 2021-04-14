@@ -1,0 +1,14 @@
+package tetrisBlocks;
+
+import tetris.TetrisBlock;
+
+public class SShape extends TetrisBlock {
+    /**
+     * Generates the S block shape.
+     */
+    public SShape() {
+        super(new int [][]{ {0,1,1},
+                            {1,1,0},
+        });
+    }
+}
