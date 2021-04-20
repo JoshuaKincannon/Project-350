@@ -26,7 +26,7 @@ public class GamePlatform {
          *
          */
         public GridPanel() {
-            setLayout(new GridLayout (3, 2));
+            setLayout(new GridLayout (3, 2)); //columns, rows
             setBackground(Color.green);
 
             //initializing buttons for each Game
@@ -45,6 +45,15 @@ public class GamePlatform {
             }
         }
 
+        @Override 
+        public void actionPerformed(ActionEvent e) {
+            Object pressed = e.getSource();
+
+            if(pressed == othelloButton){
+                new OthelloGUI();
+            }
+        }
+        
         @Override
         public void actionPerformed(ActionEvent e) {
             Object pressed = e.getSource();
@@ -54,6 +63,8 @@ public class GamePlatform {
             }
         }
     }
+    
+  
     
     /**
     * This will launch the Tetris game when tetrisbutton is pressed.
