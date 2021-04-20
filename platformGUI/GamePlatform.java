@@ -53,6 +53,17 @@ public class GamePlatform {
                 new OthelloGUI();
             }
         }
+        
+         /**
+         * Launches TicTacToe when button is pressed
+         * @param e
+         */
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            if(e.getSource() == tttButton){
+                new MainTicTacToe().main(new String[]{"arg1", "arg2"});;
+            }
+        }
      
     }
     
