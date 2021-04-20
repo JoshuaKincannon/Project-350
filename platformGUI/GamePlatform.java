@@ -53,15 +53,7 @@ public class GamePlatform {
                 new OthelloGUI();
             }
         }
-        
-        @Override
-        public void actionPerformed(ActionEvent e) {
-            Object pressed = e.getSource();
-
-            if(pressed == othelloButton){
-                new OthelloGUI();
-            }
-        }
+     
     }
     
   
