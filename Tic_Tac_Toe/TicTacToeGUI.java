@@ -9,10 +9,12 @@ import javax.swing.JOptionPane;
  * Tic Tac Toe with GUI implementation using Java Swing
  * @author: Chiamaka Ezuruonye
  * Date: April 2nd 2021
- */ //TODO: game instructions in JMenu
+ */ //TODO: Add game instructions
 
 /**
  * TicTacToeGUI class, implements an action listener
+ * Starts game by gathering names, game pieces
+ * and building the game board
  */
 public class TicTacToeGUI implements ActionListener {
     Random rand = new Random();
@@ -23,55 +25,97 @@ public class TicTacToeGUI implements ActionListener {
     JButton[] buttons = new JButton[9];
     boolean player1turn;
     boolean winner = false;
-    String playerName;
+    String player2Name;
+    String player1Name;
     boolean playervsplayer = false;
     boolean playervscpu = false;
     Scanner scan = new Scanner(System.in);
     Scanner sc = new Scanner(System.in);
-    String pl2 = "0";
-
-    String player1Name = JOptionPane.showInputDialog(null, "Who is Player 1?",
-            "Tic Tac Toe", JOptionPane.YES_NO_CANCEL_OPTION);
-    String pl1 = JOptionPane.showInputDialog(null, player1Name +
-                    ", what letter/symbol would you like your game piece to be?",
-            "Tic Tac Toe", JOptionPane.QUESTION_MESSAGE);
-    //TODO: specify what happens if enter something other than a word/symbol
-
-    String player2Name = JOptionPane.showInputDialog(null, "Who is Player 2? " +
-                    "If you wish to play against a CPU, please enter 'cpu' or 'CPU' below.",
-            "Tic Tac Toe", JOptionPane.YES_NO_CANCEL_OPTION);
-    //TODO: specify a 10 char limit for names
-
-    /*String pl2 = JOptionPane.showInputDialog(null, player2Name +
-                    ", what letter/word/symbol would you like your piece to be?",
-            "Tic Tac Toe", JOptionPane.QUESTION_MESSAGE);
-
-     */
+    String pl1;
+    String pl2 = "R2D2";
+    boolean firstGame = true;
 
     /**
      * TicTacToeGUI method builds game board and inserts panels and buttons
      * It also adds the style and colors for background/foreground and font
      */
     TicTacToeGUI(){
-        if(player2Name.equals("cpu") || player2Name.equals("CPU")){
-            playervscpu = true;
-            player2Name = "CPU";
+        //player 1 -  specify a 10 char limit for names no empty names - DONE
+        player1Name = JOptionPane.showInputDialog(null, "Who is Player 1?",
+                "Tic Tac Toe", JOptionPane.YES_NO_CANCEL_OPTION);
+        if (player1Name.length() > 10 || player1Name.length() == 0) {
+            String newname = JOptionPane.showInputDialog(null, player1Name +
+                                "The name given was invalid. " +
+                                "Please enter a new name no longer than 10 characters.",
+                        "Tic Tac Toe", JOptionPane.QUESTION_MESSAGE);
+            player1Name = newname;
         }
-        else {
-            playervsplayer = true;
-            String pltwo = JOptionPane.showInputDialog(null, player2Name +
+        if(player1Name.equals(JOptionPane.CANCEL_OPTION) || player1Name.equals(JOptionPane.CLOSED_OPTION)){
+            System.exit(0);
+        }
+        //player 1 game piece
+        pl1 = JOptionPane.showInputDialog(null, player1Name +
                             ", what letter/symbol would you like your game piece to be?",
                     "Tic Tac Toe", JOptionPane.QUESTION_MESSAGE);
+            //specify what happens if enter something greater than 5 characters,
+            // no empty game pieces - DONE
+        if (pl1.length() > 5 || pl1.length() == 0) {
+            String newpiece = JOptionPane.showInputDialog(null, player1Name +
+                                "The piece chosen for player 1 was invalid, please enter a new piece " +
+                                "no longer than 5 characters.",
+                        "Tic Tac Toe", JOptionPane.QUESTION_MESSAGE);
+            pl1 = newpiece;
+        }
+        if(pl1.equals(JOptionPane.CANCEL_OPTION) || pl1.equals(JOptionPane.CLOSED_OPTION)){
+            System.exit(0);
+        }
+
+            //player 2 -
+        player2Name = JOptionPane.showInputDialog(null, "Who is Player 2? " +
+                            "If you wish to play against our CPU, R2D2, please enter " +
+                        "'r2/R2' or 'R2D2/r2d2' below.","Tic Tac Toe", JOptionPane.YES_NO_CANCEL_OPTION);
+            //specify a 10 char limit for names no empty names - DONE
+            //if not CPU but PvP game
+        if (player2Name.length() > 10 || player2Name.length() == 0) {
+            String newname = JOptionPane.showInputDialog(null, player2Name +
+                                "The name given for player 1 was invalid, please enter a new name " +
+                                "no longer than 10 characters.",
+                        "Tic Tac Toe", JOptionPane.QUESTION_MESSAGE);
+            player2Name = newname;
+        }
+        if(player2Name.equals(JOptionPane.CANCEL_OPTION) || player2Name.equals(JOptionPane.CLOSED_OPTION)){
+            System.exit(0);
+        }
+
+        if (player2Name.equals("r2") || player2Name.equals("R2") || player2Name.equals("R2D2")
+                || player2Name.equals("r2d2")) {
+            playervscpu = true;
+            player2Name = "R2";
+        } else { //player 2 game piece
+            playervsplayer = true;
+            String pltwo = JOptionPane.showInputDialog(null, player2Name +
+                                ", what letter/symbol would you like your game piece to be?",
+                        "Tic Tac Toe", JOptionPane.QUESTION_MESSAGE);
             pl2 = pltwo;
-        } //TODO: specify what happens if they enter something other than a letter/symbol
+        } //specify what happens if they enter something more than 5 or empty
+        if (pl2.length() > 9 || pl1.length() == 0) {
+            String newpiece = JOptionPane.showInputDialog(null, player2Name +
+                                "The piece chosen for player 2 was invalid, please enter a new piece " +
+                                "no longer than 5 characters.",
+                        "Tic Tac Toe", JOptionPane.QUESTION_MESSAGE);
+            pl2 = newpiece;
+        }
+        if(pl2.equals(JOptionPane.CANCEL_OPTION) || pl2.equals(JOptionPane.CLOSED_OPTION)){
+            System.exit(0);
+        }
 
         gameFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        gameFrame.setSize(700, 700);
+        gameFrame.setSize(750, 750);
         gameFrame.getContentPane().setBackground(new Color(50, 50, 50));
         gameFrame.setLayout(new BorderLayout());
         gameFrame.setVisible(true);
-        textField.setBackground(new Color(6, 143, 84, 255)); //background color
-        textField.setForeground(new Color(12, 10, 10)); //text color
+        textField.setBackground(new Color(94, 143, 116, 255)); //background color
+        textField.setForeground(new Color(45, 45, 45)); //text color
         textField.setFont(new Font("Courier", Font.BOLD, 55));
         textField.setHorizontalAlignment(JLabel.CENTER);
         textField.setText("*Tic-Tac-Toe*");
@@ -83,7 +127,7 @@ public class TicTacToeGUI implements ActionListener {
 
         buttonPanel.setLayout(new GridLayout(3, 3));
         buttonPanel.setBackground(new Color(113, 79, 110));
-        for(int i = 0; i < 9; i++){
+        for (int i = 0; i < 9; i++) {
             buttons[i] = new JButton();
             buttonPanel.add(buttons[i]);
             buttons[i].setFont(new Font("Aerial", Font.BOLD, 80));
@@ -114,7 +158,7 @@ public class TicTacToeGUI implements ActionListener {
                 if (playervsplayer) {
                     if (player1turn) {
                         if (buttons[i].getText() == "") {
-                            buttons[i].setForeground(new Color(255, 111, 206)); //text color
+                            buttons[i].setForeground(new Color(239, 155, 125)); //text color
                             buttons[i].setText(pl1); //button text
                             player1turn = false;
                             textField.setText(player2Name + "'s Turn - " + pl2); //player 2 name
@@ -122,7 +166,7 @@ public class TicTacToeGUI implements ActionListener {
                         }
                     } else {
                         if (buttons[i].getText() == "") {
-                            buttons[i].setForeground(new Color(80, 151, 255));
+                            buttons[i].setForeground(new Color(166, 157, 222));
                             buttons[i].setText(pl2);
                             player1turn = true;
                             textField.setText(player1Name + "'s Turn - " + pl1); //player 1 name
@@ -132,100 +176,101 @@ public class TicTacToeGUI implements ActionListener {
                 }
             }
 
-            if (playervscpu) { //TODO: FIX the overwriting problem with the CPU!!!!! -> DONE
+            if (playervscpu) { // FIX the overwriting problem with the CPU!!!!! -> DONE
+                //TODO: add a pause in between turns from p1 to cpu -> how?
+
                 if (e.getSource() == buttons[i]) {
                     if (player1turn) {
                         if (buttons[i].getText() == "") {
-                            buttons[i].setForeground(new Color(255, 111, 206)); //text color
+                            buttons[i].setForeground(new Color(239, 155, 125)); //text color
                             buttons[i].setText(pl1); //button text
                             player1turn = false;
                             textField.setText(player2Name + "'s Turn - " + pl2); //set player 2 name
                             checkWinner();
                         }
                     }
-                }
-                else {
-                     //   i = ran.nextInt(9) + 1;
-                    if(!player1turn) {
+                } else {
+                    //   i = ran.nextInt(9) + 1;
+                    if (!player1turn) {
                         if (buttons[i].getText() == "") {
-                            buttons[i].setForeground(new Color(80, 151, 255));
+                            buttons[i].setForeground(new Color(53, 163, 250));
                             buttons[i].setText(pl2);
                             player1turn = true;
                             textField.setText(player1Name + "'s Turn - " + pl1); //set player 1 name
                             checkWinner();
                         } else {
                             // i++;
-                            i = ran.nextInt(9);
-                            while (buttons[i].getText() != "") {
+                           // i = 1;
+                            i = ran.nextInt(9 - 1) + 1;
+                            System.out.println(i);
+                            while (buttons[i].getText() != "") { //fixes Overwriting?
                                 i++;
+                                if(i == 8 && buttons[i].getText() != ""){
+                                    i = 0;
+                                }
                             }
-                                buttons[i].setForeground(new Color(80, 151, 255));
-                                buttons[i].setText(pl2);
-                                player1turn = true;
-                                textField.setText(player1Name + "'s Turn - " + pl1); //set player 1 name
-                                checkWinner();
-                            }
+                            buttons[i].setForeground(new Color(53, 163, 250));
+                            buttons[i].setText(pl2);
+                            player1turn = true;
+                            textField.setText(player1Name + "'s Turn - " + pl1); //set player 1 name
+                            checkWinner();
                         }
                     }
                 }
             }
         }
-
-
-
-        //play again?
-        /*JOptionPane p = new JOptionPane();
-        p.showMessageDialog(null,"Play Again?", "Tic Tac Toe",
-                JOptionPane.YES_NO_OPTION);
-
-         */
+    }
 
     /**
      * FirstTurn method uses random variable
      * to determine which player goes first
+     * no parameters
      */
     public void firstTurn(){
-       try {
-           Thread.sleep(1000);
-       } catch (InterruptedException e) {
-           e.printStackTrace();
-       }
+        try {
+            Thread.sleep(1000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
 
-       if(playervsplayer) {
-           if (rand.nextInt(2) == 0) {
-               player1turn = true;
-               textField.setText(player1Name + "'s Turn - " + pl1);
-           } else {
-               player1turn = false;
-               textField.setText(player2Name + "'s Turn - " + pl2); //set player 2 name
-           }
-       }
-       else if(playervscpu){ //TODO: add a pause in between turns from p1 to cpu
-           if (rand.nextInt(2) == 0) {
-               player1turn = true;
-               textField.setText(player1Name + "'s Turn - " + pl1);
-           }
-           else{
-               player1turn = false;
-               int i = 0;
-               buttons[i].setForeground(new Color(80, 151, 255));
-               buttons[i].setText(pl2);
-               player1turn = true;
-               textField.setText(player1Name + "'s Turn - " + pl1);
-           }
-       }
+        if(playervsplayer) {
+            if (rand.nextInt(2) == 0) {
+                player1turn = true;
+                textField.setText(player1Name + "'s Turn - " + pl1);
+            } else {
+                player1turn = false;
+                textField.setText(player2Name + "'s Turn - " + pl2); //set player 2 name
+            }
+        }
+        else if(playervscpu){
+            if (rand.nextInt(2) == 0) {
+                player1turn = true;
+                textField.setText(player1Name + "'s Turn - " + pl1);
+            }
+            else{
+                player1turn = false;
+                int i = 0;
+                buttons[i].setForeground(new Color(53, 163, 250));
+                buttons[i].setText(pl2);
+                player1turn = true;
+                textField.setText(player1Name + "'s Turn - " + pl1);
+            }
+        }
     }
 
     /**
-     * Check Winner method uses the buttons array
+     * Check Winner method uses the 'buttons' array
      * to check values for patterns and matches for a win
+     * then sets the boolean 'winner' to true if true
+     * and calls the 'tie' method
+     * no parameters
      */
     public void checkWinner(){
         //check x winning conditions
         if((buttons[0].getText() == pl1) &&
                 (buttons[1].getText() == pl1) &&
                 (buttons[2].getText() == pl1)){
-         xWins(0, 1, 2);
+            xWins(0, 1, 2);
             winner = true;
         }
 
@@ -321,13 +366,13 @@ public class TicTacToeGUI implements ActionListener {
             oWins(2, 4, 6);
             winner = true;
         }
-
         //check if there is a tie
         tie();
     }
 
     /**
-     *
+     * Checks if player one is the winner
+     * then calls the reset method
      * @param tic is an int
      * @param tac is an int
      * @param toe ia an int
@@ -340,10 +385,13 @@ public class TicTacToeGUI implements ActionListener {
             buttons[i].setEnabled(false);
         }
         textField.setText(player1Name + " Wins!");
+        //reset
+        resetGame();
     }
 
     /**
-     *
+     * Checks of player two is the winner
+     * then calls the reset method
      * @param tic is an int
      * @param tac is an int
      * @param toe is an int
@@ -356,11 +404,15 @@ public class TicTacToeGUI implements ActionListener {
             buttons[i].setEnabled(false);
         }
         textField.setText(player2Name + " Wins!");
+        //reset
+        resetGame();
     }
 
     /**
      * tie method checks for a full board
-     * with no wins and decides it it's a tie
+     * with no wins and decides it is a tie
+     * then calls the reset method
+     * no parameters
      */
     public void tie(){
         if(buttons[0].getText() != "" && buttons[1].getText() != "" &&
@@ -373,8 +425,26 @@ public class TicTacToeGUI implements ActionListener {
                 buttons[i].setEnabled(false);
             }
             textField.setText("It's A Tie!");
-            //TODO: Add restart JOption at the end of the game + scores
-            //TODO: add a leaderboard/number of wins
+            //TODO: Add restart JOption at the end of the game + scores - DONE
+            //reset
+            resetGame();
+        }
+    }
+
+    /**
+     * Reset game method resets after winner is declared
+     * uses a JOption Pane
+     * no parameters
+     */
+    public void resetGame() {
+        int newgame = JOptionPane.showConfirmDialog(null,
+                "Would you like to play again?","New Game?", JOptionPane.YES_NO_OPTION);
+        gameFrame.setVisible(false);
+        if(newgame == JOptionPane.NO_OPTION || newgame == JOptionPane.CLOSED_OPTION){
+            System.exit(0);
+        }
+        else {
+            TicTacToeGUI tictac2 = new TicTacToeGUI();
         }
     }
 }
