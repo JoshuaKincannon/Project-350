@@ -1,39 +1,36 @@
+package CIS350Project;
+
 import java.awt.*;
 import java.awt.event.*;
 import java.util.*;
 import javax.swing.*;
-import java.awt.event.ActionListener;
-import java.util.Scanner;
-import javax.swing.JOptionPane;
+
 /**
  * Tic Tac Toe with GUI implementation using Java Swing
  * @author: Chiamaka Ezuruonye
- * Date: April 2nd 2021
- */ //TODO: Add game instructions
+ * Date: April 21nd 2021
+ */ //TODO: Add game instructions - DONE
 
 /**
- * TicTacToeGUI class, implements an action listener
+ * Tic.TicTacToeGUI class, implements an action listener
  * Starts game by gathering names, game pieces
  * and building the game board
  */
 public class TicTacToeGUI implements ActionListener {
-    Random rand = new Random();
-    JFrame gameFrame = new JFrame();
-    JPanel title = new JPanel();
-    JPanel buttonPanel = new JPanel();
-    JLabel textField = new JLabel();
-    JButton[] buttons = new JButton[9];
-    boolean player1turn;
-    boolean winner = false;
-    String player2Name;
-    String player1Name;
-    boolean playervsplayer = false;
-    boolean playervscpu = false;
-    Scanner scan = new Scanner(System.in);
-    Scanner sc = new Scanner(System.in);
-    String pl1;
-    String pl2 = "R2D2";
-    boolean firstGame = true;
+    private static Random rand = new Random();
+    private static JFrame gameFrame = new JFrame();
+    private static JPanel title = new JPanel();
+    private static JPanel buttonPanel = new JPanel();
+    private static JLabel textField = new JLabel();
+    private static JButton[] buttons = new JButton[9];
+    private static boolean player1turn;
+    private static boolean winner = false;
+    private String player2Name;
+    private String player1Name;
+    private static boolean playervsplayer = false;
+    private static boolean playervscpu = false;
+    private String pl1;
+    private String pl2 = "R2D2";
 
     /**
      * TicTacToeGUI method builds game board and inserts panels and buttons
@@ -157,7 +154,7 @@ public class TicTacToeGUI implements ActionListener {
             if (e.getSource() == buttons[i]) {
                 if (playervsplayer) {
                     if (player1turn) {
-                        if (buttons[i].getText() == "") {
+                        if (buttons[i].getText().equals("") ) {
                             buttons[i].setForeground(new Color(239, 155, 125)); //text color
                             buttons[i].setText(pl1); //button text
                             player1turn = false;
@@ -165,7 +162,7 @@ public class TicTacToeGUI implements ActionListener {
                             checkWinner();
                         }
                     } else {
-                        if (buttons[i].getText() == "") {
+                        if (buttons[i].getText().equals("")) {
                             buttons[i].setForeground(new Color(166, 157, 222));
                             buttons[i].setText(pl2);
                             player1turn = true;
@@ -181,7 +178,7 @@ public class TicTacToeGUI implements ActionListener {
 
                 if (e.getSource() == buttons[i]) {
                     if (player1turn) {
-                        if (buttons[i].getText() == "") {
+                        if (buttons[i].getText().equals("")) {
                             buttons[i].setForeground(new Color(239, 155, 125)); //text color
                             buttons[i].setText(pl1); //button text
                             player1turn = false;
@@ -190,19 +187,15 @@ public class TicTacToeGUI implements ActionListener {
                         }
                     }
                 } else {
-                    //   i = ran.nextInt(9) + 1;
                     if (!player1turn) {
-                        if (buttons[i].getText() == "") {
+                        if (buttons[i].getText().equals("")) {
                             buttons[i].setForeground(new Color(53, 163, 250));
                             buttons[i].setText(pl2);
                             player1turn = true;
                             textField.setText(player1Name + "'s Turn - " + pl1); //set player 1 name
                             checkWinner();
                         } else {
-                            // i++;
-                           // i = 1;
                             i = ran.nextInt(9 - 1) + 1;
-                            System.out.println(i);
                             while (buttons[i].getText() != "") { //fixes Overwriting?
                                 i++;
                                 if(i == 8 && buttons[i].getText() != ""){
@@ -444,8 +437,7 @@ public class TicTacToeGUI implements ActionListener {
             System.exit(0);
         }
         else {
-            TicTacToeGUI tictac2 = new TicTacToeGUI();
+             new TicTacToeGUI();
         }
     }
 }
-
