@@ -1,0 +1,762 @@
+package tetris;
+
+//import GUI.GamePlatform;
+import org.junit.Assert;
+import org.junit.Before;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import javax.swing.*;
+import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.InputEvent;
+import java.util.Arrays;
+import static org.junit.jupiter.api.Assertions.*;
+
+
+class TetrisTests extends JPanel {
+
+    StartupForm startUp;
+    JPanel panel;
+    GameForm f;
+    Tetris tetris;
+    TetrisBlock block;
+    TetrisBlock block2;
+    TetrisBlock[] blocks;
+    GameArea game;
+    ActionEvent e;
+    Color[][] background;
+    Color[][] background2;
+    GameThread thread;
+    LeaderboardForm leader;
+
+
+    @Test
+    //checking if a block is out of bounds
+    void outboundsTopTrue() {
+        f = new GameForm();
+        panel = new javax.swing.JPanel();
+        panel = f.getJPanel();
+        game = new GameArea(panel, 10);
+
+        game.spawnBlock();
+        block = new TetrisBlock(game.getBlock());
+        game.getBlock().setX(8);
+        game.getBlock().setY(-1);
+
+        assertEquals(true, game.isBlockOutOfBounds());
+    }
+
+    @Test
+        //checking if a block is out of bounds
+    void notOutboundsTopFalse() {
+        f = new GameForm();
+        panel = new javax.swing.JPanel();
+        panel = f.getJPanel();
+        game = new GameArea(panel, 10);
+
+        game.spawnBlock();
+        block = new TetrisBlock(game.getBlock());
+        game.getBlock().setX(8);
+        game.getBlock().setY(3);
+
+        assertEquals(false, game.isBlockOutOfBounds());
+    }
+    //----------------------------------------------------------------------------------------
+
+    @Test
+        //Testing the constructor COLUMNS
+    void constructorCols() {
+        f = new GameForm();
+        panel = new javax.swing.JPanel();
+        panel = f.getJPanel();
+        game = new GameArea(panel, 10);
+
+        assertEquals(10, game.getGridColumns());
+    }
+
+    @Test
+        //Testing the constructor JPanel
+    void constructorPanel() {
+        f = new GameForm();
+        panel = new javax.swing.JPanel();
+        panel = f.getJPanel();
+        game = new GameArea(panel, 10);
+
+        assertEquals(panel, f.getJPanel());
+    }
+
+    //----------------------------------------------------------------------------------------
+
+    @Test
+        //dropping a Tetris piece
+    void drop() {
+        f = new GameForm();
+        panel = new javax.swing.JPanel();
+        panel = f.getJPanel();
+        game = new GameArea(panel, 10);
+
+        tetris = new Tetris();
+        Tetris.main(new String[]{"args1", "args2"});
+        game.initBackGroundArray();
+        game.spawnBlock();
+
+        game.getBlock().setX(4);
+        game.getBlock().setY(4);
+
+        game.drop();
+
+        assertEquals(5, game.getBlock().getY());
+    }
+
+    @Test
+        //dropping a Tetris piece if it already at the bottom
+    void dropBottom() {
+        f = new GameForm();
+        panel = new javax.swing.JPanel();
+        panel = f.getJPanel();
+        game = new GameArea(panel, 10);
+
+        tetris = new Tetris();
+        Tetris.main(new String[]{"args1", "args2"});
+        game.initBackGroundArray();
+        game.spawnBlock();
+
+        game.getBlock().setX(4);
+        game.getBlock().setY(game.getRowCount() - 2);
+
+        game.drop();
+        assertEquals(game.getRowCount() - 2, game.getBlock().getY());
+    }
+
+//----------------------------------------------------------------------------------------
+
+    //moving a block left AT BOUNDS
+    @Test
+    //dropping a Tetris piece if it already at the bottom
+    void moveLeftMax() {
+        f = new GameForm();
+        panel = new javax.swing.JPanel();
+        panel = f.getJPanel();
+        game = new GameArea(panel, 10);
+
+        tetris = new Tetris();
+        Tetris.main(new String[]{"args1", "args2"});
+        game.initBackGroundArray();
+        game.spawnBlock();
+
+        game.getBlock().setX(0);
+        game.getBlock().setY(4);
+
+        game.moveBlockLeft();
+//        System.out.println(game.getRowCount());
+        assertEquals(0, game.getBlock().getX());
+    }
+
+    //moving a block left
+    @Test
+    //dropping a Tetris piece if it already at the bottom
+    void moveLeft() {
+        f = new GameForm();
+        panel = new javax.swing.JPanel();
+        panel = f.getJPanel();
+        game = new GameArea(panel, 10);
+
+        tetris = new Tetris();
+        Tetris.main(new String[]{"args1", "args2"});
+        game.initBackGroundArray();
+        game.spawnBlock();
+
+        game.getBlock().setX(1);
+        game.getBlock().setY(4);
+
+        game.moveBlockLeft();
+
+        assertEquals(0, game.getBlock().getX());
+    }
+
+
+    @Test
+        //moving a block right AT BOUNDS
+    void moveRightMax() {
+        f = new GameForm();
+        panel = new javax.swing.JPanel();
+        panel = f.getJPanel();
+        game = new GameArea(panel, 10);
+
+        tetris = new Tetris();
+        Tetris.main(new String[]{"args1", "args2"});
+        game.initBackGroundArray();
+        game.spawnBlock();
+
+        game.getBlock().setX(game.getGridColumns() - 1);
+        game.getBlock().setY(4);
+
+        game.moveBlockRight();
+        int f = game.getGridColumns();
+
+        assertEquals(game.getGridColumns() - 1, game.getBlock().getX());
+    }
+
+    @Test
+        //moving a block right
+    void moveRight() {
+        f = new GameForm();
+        panel = new javax.swing.JPanel();
+        panel = f.getJPanel();
+        game = new GameArea(panel, 10);
+
+        tetris = new Tetris();
+        Tetris.main(new String[]{"args1", "args2"});
+        game.initBackGroundArray();
+        game.spawnBlock();
+
+        game.getBlock().setX(5);
+        game.getBlock().setY(4);
+
+        game.moveBlockRight();
+
+        assertEquals(6, game.getBlock().getX());
+    }
+
+
+    @Test
+        //moving a Tetris piece if it already at the bottom
+    void moveDown() {
+
+        f = new GameForm();
+        panel = new javax.swing.JPanel();
+        panel = f.getJPanel();
+        game = new GameArea(panel, 10);
+
+        tetris = new Tetris();
+        Tetris.main(new String[]{"args1", "args2"});
+
+        game.initBackGroundArray();
+        game.spawnBlock();
+
+        game.getBlock().setX(4);
+        game.getBlock().setY(4);
+
+        game.moveBlockDown();
+
+        assertEquals(5, game.getBlock().getY());
+        assertEquals(true, game.moveBlockDown());
+    }
+
+    //moving a block down AT BOUNDS
+    @Test
+    void moveDownMax() {
+
+        f = new GameForm();
+        panel = new javax.swing.JPanel();
+        panel = f.getJPanel();
+        game = new GameArea(panel, 10);
+
+        tetris = new Tetris();
+        Tetris.main(new String[]{"args1", "args2"});
+
+        game.initBackGroundArray();
+        game.spawnBlock();
+
+        game.getBlock().setX(4);
+        game.getBlock().setY(game.getRowCount() - 2);
+
+        game.moveBlockDown();
+
+        assertEquals(game.getRowCount() - 2, game.getBlock().getY());
+        assertEquals(false, game.moveBlockDown());
+    }
+//-------------------------------------------------------------------------------------------
+
+    //holding a block
+    @Test
+    void hold() {
+
+        f = new GameForm();
+        panel = new javax.swing.JPanel();
+        panel = f.getJPanel();
+
+        game = new GameArea(panel, 10);
+        tetris = new Tetris();
+        Tetris.main(new String[]{"args1", "args2"});
+
+        game.initBackGroundArray();
+        game.spawnBlock();
+
+        block = game.getBlock();
+        game.hold();
+
+        assertTrue(Arrays.deepEquals(block.getShape(), (game.holdBlock.getShape())));
+
+    }
+
+    //holding a block
+    @Test
+    void holdAgain() {
+
+        f = new GameForm();
+        panel = new javax.swing.JPanel();
+        panel = f.getJPanel();
+
+        game = new GameArea(panel, 10);
+        tetris = new Tetris();
+        Tetris.main(new String[]{"args1", "args2"});
+
+        game.initBackGroundArray();
+        game.spawnBlock();
+
+        block = game.getBlock();
+        game.hold();
+        assertTrue(Arrays.deepEquals(block.getShape(), (game.holdBlock.getShape())));
+//        block2 = game.holdBlock;
+        game.hold();
+        assertTrue(Arrays.deepEquals(block.getShape(), (game.getBlock().getShape())));
+    }
+
+
+    //next block
+    @Test
+    void nextBlock() {
+
+        f = new GameForm();
+        panel = new javax.swing.JPanel();
+        panel = f.getJPanel();
+
+        game = new GameArea(panel, 10);
+        tetris = new Tetris();
+        Tetris.main(new String[]{"args1", "args2"});
+
+
+        game.initBackGroundArray();
+        game.spawnBlock();
+        block = game.getNext();
+
+
+        assertTrue(game.getNext() != null);
+
+    }
+
+    //----------------------------------------------------------------------------
+    //initializing the background array
+    @Test
+    void initBackground() {
+
+        f = new GameForm();
+        panel = new javax.swing.JPanel();
+        panel = f.getJPanel();
+
+        game = new GameArea(panel, 10);
+        tetris = new Tetris();
+        Tetris.main(new String[]{"args1", "args2"});
+
+
+        game.initBackGroundArray();
+        game.spawnBlock();
+
+
+        assertTrue(game.getBackgroundGame() != null);
+
+    }
+
+//----------------------------------------------------------------------------
+
+    //Testing spawn
+    @Test
+    void spawn() {
+
+        f = new GameForm();
+        panel = new javax.swing.JPanel();
+        panel = f.getJPanel();
+
+        game = new GameArea(panel, 10);
+        tetris = new Tetris();
+        Tetris.main(new String[]{"args1", "args2"});
+
+        game.initBackGroundArray();
+        game.spawnBlock();
+        block = game.getBlock();
+
+
+        assertTrue(Arrays.deepEquals(block.getShape(), (game.getBlock().getShape())));
+
+    }
+
+    //----------------------------------------------------------------------------
+
+
+    //This was going to test all of the Class shapes
+    @Test
+    void rotateFarLeft() {
+
+        f = new GameForm();
+        panel = new javax.swing.JPanel();
+        panel = f.getJPanel();
+
+        game = new GameArea(panel, 10);
+        tetris = new Tetris();
+        Tetris.main(new String[]{"args1", "args2"});
+
+        game.initBackGroundArray();
+        game.spawnBlock();
+
+        game.getBlock().setX(0);
+        game.getBlock().setY(4);
+        game.rotate();
+
+
+        assertEquals(4, game.getBlock().getY());
+
+    }
+
+
+    //This was going to test all of the Class shapes
+    @Test
+    void rotateFarRight() {
+
+        f = new GameForm();
+        panel = new javax.swing.JPanel();
+        panel = f.getJPanel();
+
+        game = new GameArea(panel, 10);
+        tetris = new Tetris();
+        Tetris.main(new String[]{"args1", "args2"});
+
+        game.initBackGroundArray();
+        game.spawnBlock();
+
+        game.getBlock().setX(game.getGridColumns() - 1);
+        game.getBlock().setY(4);
+        game.rotate();
+
+
+        assertEquals(4, game.getBlock().getY());
+
+    }
+    //----------------------------------------------------------------------------
+
+    //  Cleaning liens TODO
+    @Test
+    void noClearLines() {
+
+        f = new GameForm();
+        panel = new javax.swing.JPanel();
+        panel = f.getJPanel();
+
+        game = new GameArea(panel, 10);
+        thread = new GameThread(game, f);
+        tetris = new Tetris();
+        Tetris.main(new String[]{"args1", "args2"});
+
+
+        game.initBackGroundArray();
+
+
+        background = new Color[game.getRowCount()][game.getGridColumns()];
+
+        for (int r = game.getRowCount() - 1; r >= 0; r--) {
+            if (r == game.getRowCount() - 2) {
+                return;
+            } else {
+                for (int c = 0; c < 10; c++) {
+                    background[r][c] = Color.blue;
+                }
+                break;
+            }
+        }
+        game.clearLines();
+
+        assertFalse(1 == game.clearLines());
+    }
+
+
+    //  Cleaning liens TODO
+    @Test
+    void clearLines() {
+
+        boolean lineFilled;
+        f = new GameForm();
+        panel = new javax.swing.JPanel();
+        panel = f.getJPanel();
+
+        game = new GameArea(panel, 10);
+        thread = new GameThread(game, f);
+        tetris = new Tetris();
+        Tetris.main(new String[]{"args1", "args2"});
+
+
+        game.initBackGroundArray();
+
+
+        for (int r = game.getRowCount() - 1; r >= 0; r--) {
+            if (r == game.getRowCount() - 4) {
+                break;
+            } else {
+                for (int c = 0; c < 10; c++) {
+                    game.background[r][c] = Color.blue;
+                }
+            }
+
+            game.clearLines();
+
+
+            assertFalse(game.background[17][0] == Color.blue);
+        }
+    }
+
+
+    //----------------------------------------------------------------------------
+
+
+    //  Going to the leaderboard from startup form
+    @Test
+    void showLeaderboard() {
+
+        f = new GameForm();
+        panel = new javax.swing.JPanel();
+        panel = f.getJPanel();
+        game = new GameArea(panel, 10);
+        tetris = new Tetris();
+        Tetris.main(new String[]{"args1", "args2"});
+
+        startUp = new StartupForm();
+
+        ActionEvent event = new ActionEvent(startUp.getBtnLeaderboard(), ActionEvent.ACTION_PERFORMED, "");
+        startUp.btnLeaderboardActionPerformed(event);
+
+        assertTrue(startUp.showLeaderboard.isLeaderboardVis());
+
+
+    }
+
+
+    //starting the game
+    @Test
+    void gameForm() {
+        f = new GameForm();
+        panel = new javax.swing.JPanel();
+        panel = f.getJPanel();
+        game = new GameArea(panel, 10);
+        tetris = new Tetris();
+        Tetris.main(new String[]{"args1", "args2"});
+
+        startUp = new StartupForm();
+        game.initBackGroundArray();
+
+
+        ActionEvent event = new ActionEvent(startUp.getBtnStartGame(), ActionEvent.ACTION_PERFORMED, "");
+        startUp.btnStartGameActionPerformed(event);
+
+
+        assertTrue(startUp.showGameForm.isGameFormVis());
+
+    }
+
+    //starting the game then going back to the startup form
+    @Test
+    void gameFormMain() {
+        f = new GameForm();
+        panel = new javax.swing.JPanel();
+        panel = f.getJPanel();
+        game = new GameArea(panel, 10);
+        tetris = new Tetris();
+        Tetris.main(new String[]{"args1", "args2"});
+
+        startUp = new StartupForm();
+        game.initBackGroundArray();
+
+
+        ActionEvent event = new ActionEvent(startUp.getBtnStartGame(), ActionEvent.ACTION_PERFORMED, "");
+        startUp.btnStartGameActionPerformed(event);
+
+        ActionEvent event2 = new ActionEvent(f.getBtnMainMenu(), ActionEvent.ACTION_PERFORMED, "");
+        f.btnMainMenuActionPerformed(event2);
+
+
+        assertTrue(startUp.isStartUpVis());
+
+    }
+
+    //going from leaderboard to start up form
+    @Test
+    void leaderboardToMain() {
+        f = new GameForm();
+        panel = new javax.swing.JPanel();
+        panel = f.getJPanel();
+        game = new GameArea(panel, 10);
+        tetris = new Tetris();
+        Tetris.main(new String[]{"args1", "args2"});
+
+        startUp = new StartupForm();
+
+        ActionEvent event = new ActionEvent(startUp.getBtnLeaderboard(), ActionEvent.ACTION_PERFORMED, "");
+        startUp.btnLeaderboardActionPerformed(event);
+
+
+        leader = new LeaderboardForm();
+        ActionEvent event2 = new ActionEvent(leader.getBtnMainMenu2(), ActionEvent.ACTION_PERFORMED, "");
+        leader.btnMainMenu2ActionPerformed(event2);
+
+        assertTrue(leader.showStartUp.isStartUpVis());
+
+    }
+
+
+    //----------------------------------------------------------------------------------------------
+
+    //Testing all of the block classes
+    @Test
+    void blockShapes() {
+
+        f = new GameForm();
+        panel = new javax.swing.JPanel();
+        panel = f.getJPanel();
+
+        game = new GameArea(panel, 10);
+        tetris = new Tetris();
+        Tetris.main(new String[]{"args1", "args2"});
+
+        game.initBackGroundArray();
+        game.spawnBlock();
+
+        blocks = new TetrisBlock[]{
+
+                new IShape(), new JShape(), new LShape(), new OShape(), new SShape(), new TShape(), new ZShape()
+
+        };
+
+        block2 = blocks[2];
+        block = blocks[1];
+        assertFalse(Arrays.deepEquals(blocks, (game.getBlock().getShape())));
+
+    }
+    //----------------------------------------------------------------------------------------------
+
+    //Testing if the game can draw the background
+    @Test
+    void drawBackground() {
+
+        f = new GameForm();
+        panel = new javax.swing.JPanel();
+        panel = f.getJPanel();
+
+        game = new GameArea(panel, 10);
+        tetris = new Tetris();
+        Tetris.main(new String[]{"args1", "args2"});
+
+        game.initBackGroundArray();
+        game.spawnBlock();
+
+
+        game.getBlock().setX(4);
+        game.getBlock().setY(game.getRowCount() - 3);
+
+        game.moveBlockToBackground();
+
+
+        assertTrue(game.getBackground() != null);
+
+    }
+    //---------------------------------------------------------------------------------------
+
+    //check if the score updates
+    @Test
+    void updateScore() {
+        f = new GameForm();
+        panel = new javax.swing.JPanel();
+        panel = f.getJPanel();
+
+        game = new GameArea(panel, 10);
+        thread = new GameThread(game, f);
+        tetris = new Tetris();
+        Tetris.main(new String[]{"args1", "args2"});
+
+        game.initBackGroundArray();
+        thread = new GameThread(game, f);
+
+        for (int r = game.getRowCount() - 1; r >= 0; r--) {
+            if (r == game.getRowCount() - 5) {
+                break;
+            } else {
+                for (int c = 0; c < 10; c++) {
+                    game.background[r][c] = Color.blue;
+                }
+            }
+        }
+        game.clearLines();
+
+        System.out.println(thread.getScore());
+
+        assertFalse(thread.getScore() == 3);
+    }
+
+
+    // checking if the level updates
+    @Test
+    void updateLvl() {
+        f = new GameForm();
+        panel = new javax.swing.JPanel();
+        panel = f.getJPanel();
+
+        game = new GameArea(panel, 10);
+        thread = new GameThread(game, f);
+        tetris = new Tetris();
+        Tetris.main(new String[]{"args1", "args2"});
+
+        game.initBackGroundArray();
+        thread = new GameThread(game, f);
+
+        for (int r = game.getRowCount() - 1; r >= 0; r--) {
+            if (r == game.getRowCount() - 5) {
+                break;
+            } else {
+                for (int c = 0; c < 10; c++) {
+                    game.background[r][c] = Color.blue;
+                }
+            }
+        }
+        game.clearLines();
+
+        assertFalse(thread.getLevel() == 3);
+    }
+    //---------------------------------------------------------------------------------------
+
+    //This was going to test all of the Class shapes
+    @Test
+    void gameOver() {
+
+        f = new GameForm();
+        panel = new javax.swing.JPanel();
+        panel = f.getJPanel();
+
+        game = new GameArea(panel, 10);
+        tetris = new Tetris();
+        Tetris.main(new String[]{"args1", "args2"});
+
+        game.initBackGroundArray();
+        game.spawnBlock();
+
+        String playerName = "Joshua Kincannon";
+
+        tetris.gameOver(31);
+
+
+        assertTrue(LeaderboardForm.tm.getValueAt(LeaderboardForm.tm.getRowCount()-1,1).equals(31));
+
+    }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
