@@ -1,19 +1,23 @@
-
-package tetrisBlocks;
-
-import tetris.TetrisBlock;
+package tetris;
 
 
-public class LShape extends TetrisBlock {
-
+/**
+ *
+ * Responsible for retrieving audio for the program.
+ * Creates the J shaped block to be used in the TetrisBlock class.
+ * @author Joshua Kincannon
+ * @version 13.0.2
+ *
+ */
+public class JShape extends TetrisBlock {
     /**
-     * Generates the L block shape
+     * Structures the J block shape in a 2D array.
      */
-    public LShape(){
-        
-        super(new int [][]{ {1,0},
-                            {1,0},
-                            {1,1},
-});
+    public JShape() {
+        super(new int[][]{{0, 1},
+                {0, 1},
+                {1, 1},
+        });
     }
 }
+
