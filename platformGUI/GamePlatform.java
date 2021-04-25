@@ -51,6 +51,9 @@ public class GamePlatform {
             if(pressed == snakeButton){
                 SnakeGame.GamePanel.applesEaten = 0;
                 SnakeGame.GamePanel.BODY_PARTS = 5;
+                SnakeGame.GamePanel.direction = 'R';
+                SnakeGame.GamePanel.x[0] = 0;
+                SnakeGame.GamePanel.y[0] = 0;
                 new GameFrame();
             }
             if(pressed == othelloButton){
@@ -69,30 +72,8 @@ public class GamePlatform {
             }
         }
 
-        /**
-         * Launches TicTacToe when button is pressed
-         * @param e
-         */
-        /*
 
-*/
     }
 
-
-
-    /**
-     * This will launch the Tetris game when tetrisbutton is pressed.
-     *
-     */
-    /*
-
-    }*/
-
-
-
-    /**
-     *
-     * @param args
-     */
 
 }
